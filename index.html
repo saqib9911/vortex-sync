@@ -2,39 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="manifest" href="manifest.json">
-    <title>Ghost Transfer PRO</title>
+    <title>Ghost Transfer Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>body{background:#000;color:#00ffcc;font-family:monospace;touch-action:manipulation;}</style>
+    <style>body{background:#000;color:#00ffcc;font-family:monospace;overflow:hidden;}</style>
 </head>
 <body class="flex flex-col items-center justify-center h-screen p-4">
-    <div class="w-full max-w-sm border-2 border-cyan-500 p-6 rounded-3xl bg-gray-900">
-        <h1 class="text-center font-bold text-lg mb-2 text-cyan-400">GHOST PRO</h1>
+    <div class="w-full max-w-sm border-2 border-cyan-500 p-6 rounded-3xl bg-gray-900 shadow-2xl">
+        <h1 class="text-center font-bold text-xl text-cyan-400 mb-4 tracking-tighter">GHOST TRANSFER PRO</h1>
         
-        <div class="w-full aspect-square border border-cyan-800 mb-4 overflow-hidden relative rounded-xl bg-black">
+        <div class="w-full aspect-square border border-cyan-800 mb-4 overflow-hidden relative rounded-2xl bg-black">
             <canvas id="vortex-canvas" class="w-full h-full"></canvas>
             <video id="camera-feed" class="absolute inset-0 w-full h-full object-cover hidden" autoplay playsinline></video>
         </div>
 
-        <div class="space-y-3">
+        <div class="space-y-2">
             <input type="file" id="file-input" class="hidden" onchange="loadFile(event)">
-            <button onclick="document.getElementById('file-input').click()" class="w-full bg-cyan-900 border border-cyan-400 p-3 rounded-lg font-bold">SELECT FILE</button>
+            
+            <button onclick="document.getElementById('file-input').click()" class="w-full bg-cyan-900 border border-cyan-400 p-3 rounded-xl font-bold uppercase text-xs">1. Select File</button>
             
             <div class="grid grid-cols-2 gap-2">
-                <button id="tx-btn" onclick="setMode('send')" class="bg-green-900 p-3 rounded-lg font-bold">SEND</button>
-                <button id="rx-btn" onclick="setMode('receive')" class="bg-blue-900 p-3 rounded-lg font-bold">RECEIVE</button>
+                <button onclick="setMode('send')" class="bg-green-900 p-3 rounded-xl font-bold uppercase text-xs">Send</button>
+                <button onclick="setMode('receive')" class="bg-blue-900 p-3 rounded-xl font-bold uppercase text-xs">Receive</button>
             </div>
+
+            <button id="install-btn" class="hidden w-full bg-yellow-600 text-black p-2 rounded-xl font-black text-xs animate-pulse">INSTALL APP NOW</button>
         </div>
-        <div id="status" class="mt-4 text-[10px] text-center text-cyan-600 uppercase">System Ready</div>
+        
+        <div id="status" class="mt-4 text-[9px] text-center text-cyan-600 uppercase font-bold tracking-widest">System Ready</div>
     </div>
 
     <script src="app.js"></script>
     <script>
-        // Simple registration without auto-reload logic
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log("SW Error"));
+            navigator.serviceWorker.register('sw.js');
         }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.remove('hidden'); // Install button dikhao
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.classList.add('hidden');
+                deferredPrompt = null;
+            }
+        });
     </script>
 </body>
 </html>
