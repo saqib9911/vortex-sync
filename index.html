@@ -2,60 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vortex-Sync | Develop by Saqib Zaheer Satti</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
-    <style>
-        body { background: #0a0a0a; color: #00ffcc; font-family: 'Courier New', monospace; overflow: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(0, 255, 204, 0.2); }
-        #vortex-canvas { filter: drop-shadow(0 0 10px #00ffcc); }
-        .hidden-element { display: none; }
-    </style>
+    <title>Ghost Transfer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>body{background:#000;color:#00ffcc;font-family:monospace;}</style>
 </head>
 <body class="flex flex-col items-center justify-center h-screen p-4">
-
-    <header class="text-center mb-6">
-        <h1 class="text-2xl font-bold tracking-widest text-cyan-400">VORTEX-SYNC</h1>
-        <p class="text-xs opacity-60">Visual Data Tunneling v1.0</p>
-    </header>
-
-    <!-- Main Console -->
-    <div class="w-full max-w-md glass p-6 rounded-2xl relative">
-        
-        <!-- Display / Preview -->
-        <div id="screen" class="relative w-full aspect-square bg-black rounded-lg overflow-hidden flex items-center justify-center mb-4">
+    <div class="w-full max-w-sm border border-cyan-500 p-6 rounded-3xl bg-black">
+        <h1 class="text-center font-bold mb-4">GHOST TRANSFER</h1>
+        <div class="w-full aspect-square bg-black border border-cyan-900 mb-4 overflow-hidden relative">
             <canvas id="vortex-canvas" class="w-full h-full"></canvas>
-            <video id="camera-feed" class="absolute inset-0 w-full h-full object-cover hidden-element" autoplay playsinline></video>
+            <video id="camera-feed" class="absolute inset-0 w-full h-full object-cover hidden" autoplay playsinline></video>
         </div>
-
-        <!-- Controls -->
-        <div id="controls" class="space-y-4">
-            <textarea id="data-input" class="w-full bg-black border border-cyan-900 p-2 text-sm text-cyan-300 focus:outline-none focus:border-cyan-500" placeholder="Enter secret code or text..."></textarea>
-            
+        <div class="space-y-2">
+            <input type="file" id="file-input" class="hidden" onchange="prepareFile(event)">
+            <button onclick="document.getElementById('file-input').click()" class="w-full bg-cyan-900 p-2 rounded">SELECT FILE</button>
             <div class="flex gap-2">
-                <button onclick="startSender()" class="flex-1 bg-cyan-900 hover:bg-cyan-700 p-3 rounded-lg font-bold transition">SEND</button>
-                <button onclick="startReceiver()" class="flex-1 border border-cyan-700 hover:bg-cyan-900 p-3 rounded-lg font-bold transition">RECEIVE</button>
+                <button onclick="startSender()" class="flex-1 bg-green-900 p-2 rounded">SEND</button>
+                <button onclick="startReceiver()" class="flex-1 bg-blue-900 p-2 rounded">RECEIVE</button>
             </div>
-            
-            <button onclick="stopAll()" class="w-full text-xs text-red-500 opacity-50 hover:opacity-100 uppercase tracking-widest">Stop / Reset</button>
         </div>
-
-        <!-- Terminal Output -->
-        <div id="terminal" class="mt-4 p-2 bg-black h-20 overflow-y-auto text-[10px] text-green-500 border-t border-cyan-900">
-            > System Ready...
-        </div>
+        <div id="terminal" class="mt-4 text-[9px] h-16 overflow-y-auto opacity-70"></div>
     </div>
-
-    <footer class="mt-6 text-[10px] opacity-40 uppercase">
-        Developed by Saqib Zaheer Satti
-    </footer>
-
     <script src="app.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
+    <script>navigator.serviceWorker.register('sw.js');</script>
 </body>
 </html>

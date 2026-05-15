@@ -1,9 +1,9 @@
 {
-  "name": "Vortex-Sync",
-  "short_name": "V-Sync",
-  "start_url": ".",
+  "name": "Ghost Transfer",
+  "short_name": "Ghost",
+  "start_url": "/vortex-sync/index.html",
   "display": "standalone",
-  "background_color": "#0a0a0a",
+  "background_color": "#000000",
   "theme_color": "#00ffcc",
   "icons": [
     {
