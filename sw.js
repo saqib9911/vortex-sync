@@ -1,3 +1,4 @@
 const CACHE = "ghost-v1";
-self.addEventListener("install", (e) => e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/vortex-sync/", "/vortex-sync/index.html", "/vortex-sync/app.js"]))));
-self.addEventListener("fetch", (e) => e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request))));
+const FILES = ["./", "./index.html", "./app.js", "./manifest.json"];
+self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))));
+self.addEventListener("fetch", e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
